@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from converter import MediaConverter
 import keyboard
+import winsound
+import os
 
 class MediaConverterGUI:
     def __init__(self):
@@ -17,6 +19,42 @@ class MediaConverterGUI:
         keyboard.add_hotkey('ctrl+c', self.start_conversion)
         
         self.setup_ui()
+    
+    def play_notification(self, success=True):
+        if success:
+            winsound.MessageBeep(winsound.MB_OK)
+        else:
+            winsound.MessageBeep(winsound.MB_ICONHAND)
+    
+    def create_tooltip(self, widget, text):
+        widget.bind('<Enter>', lambda e: self.show_tooltip(e, text))
+        widget.bind('<Leave>', lambda e: self.hide_tooltip())
+
+    def show_tooltip(self, event, text):
+        x, y, _, _ = event.widget.bbox("insert")
+        x += event.widget.winfo_rootx() + 25
+        y += event.widget.winfo_rooty() + 20
+        
+        self.tooltip = tk.Toplevel(event.widget)
+        self.tooltip.wm_overrideredirect(True)
+        self.tooltip.wm_geometry(f"+{x}+{y}")
+        
+        label = ttk.Label(self.tooltip, text=text, justify='left',
+                         background="#ffffe0", relief='solid', borderwidth=1)
+        label.pack()
+
+    def hide_tooltip(self):
+        if hasattr(self, 'tooltip'):
+            self.tooltip.destroy()
+            
+    def validate_conversion(self, input_path, output_format):
+        input_ext = os.path.splitext(input_path)[1].lower()
+        if (input_ext not in self.converter.SUPPORTED_VIDEO_FORMATS and 
+            input_ext not in self.converter.SUPPORTED_AUDIO_FORMATS):
+            messagebox.showerror("Error", f"Input format {input_ext} is not supported")
+            self.play_notification(False)
+            return False
+        return True
         
     def setup_ui(self):
         # Input file selection
@@ -51,7 +89,9 @@ class MediaConverterGUI:
         
         self.format_combo = ttk.Combobox(
             self.format_frame,
-            values=self.get_supported_formats()
+            values=self.get_supported_formats(),
+            state="readonly",
+            takefocus=True
         )
         self.format_combo.set("Select format")
         self.format_combo.pack(fill="x", padx=5)
@@ -63,6 +103,10 @@ class MediaConverterGUI:
             command=self.start_conversion
         )
         self.convert_button.pack(pady=10)
+        
+        # Add tooltips
+        self.create_tooltip(self.input_button, "Select input media file (Ctrl+O)")
+        self.create_tooltip(self.convert_button, "Start conversion (Ctrl+C)")
         
         # Status area
         self.status_label = ttk.Label(
@@ -92,11 +136,13 @@ class MediaConverterGUI:
     def start_conversion(self):
         input_path = self.input_label.cget("text")
         if input_path == "No file selected":
+            self.play_notification(False)
             messagebox.showerror("Error", "Please select an input file first")
             return
             
         output_format = self.format_combo.get()
-        if output_format == "Select format":
+        if output_format == "Select format" or not self.validate_conversion(input_path, output_format):
+            self.play_notification(False)
             messagebox.showerror("Error", "Please select an output format")
             return
             
