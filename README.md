@@ -1,16 +1,16 @@
 # Media Converter
 
-A screen reader-friendly desktop application for converting audio and video files between different formats. Built with Python and tkinter, using FFmpeg for media conversion.
+A screen reader-friendly desktop application for converting audio and video files between different formats. Built with Python and wxPython, using FFmpeg for media conversion.
 
 ## Features
 
 - Convert between popular video and audio formats
-- Screen reader friendly interface
+- Native Windows controls for optimal accessibility
+- Full screen reader support with NVDA and JAWS
 - Keyboard shortcuts for all major functions
-- Audio feedback for important events
 - Progress tracking during conversion
 - Error handling with accessible notifications
-- Tooltips for improved usability
+- Help system with keyboard navigation guide
 
 ## Supported Formats
 
@@ -32,8 +32,8 @@ A screen reader-friendly desktop application for converting audio and video file
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/media-converter.git
-cd media-converter
+git clone https://github.com/Orinks/Media-Converter.git
+cd Media-Converter
 ```
 
 2. Create a virtual environment (optional but recommended):
@@ -69,26 +69,27 @@ python media_converter/main.py
 
 - `Ctrl+O`: Open file selection dialog
 - `Ctrl+C`: Start conversion
+- `F1`: Show help with keyboard navigation guide
 - `Tab`: Navigate between controls
 - `Space/Enter`: Activate buttons and controls
+- `Escape`: Close dialogs
 
 ## Accessibility Features
 
+- Native Windows controls for optimal screen reader compatibility
 - Full keyboard navigation support
-- Screen reader friendly labels and descriptions
-- Audio feedback for important events
-- Clear status messages
-- High contrast interface elements
-- Tooltips with keyboard shortcut information
+- Clear focus indicators
+- Descriptive labels and announcements
+- Help system with navigation guide
+- Standard Windows keyboard behavior
 
 ## Requirements
 
 - Python 3.6 or higher
 - FFmpeg
 - Required Python packages (see requirements.txt):
+  - wxPython
   - ffmpeg-python
-  - keyboard
-  - winsound (Windows only)
 
 ## Project Structure
 
@@ -108,7 +109,7 @@ The application includes comprehensive error handling for:
 - Failed conversions
 - FFmpeg errors
 
-All errors are reported through both visual and audio feedback.
+All errors are reported through native Windows dialogs for optimal accessibility.
 
 ## Contributing
 
@@ -125,4 +126,4 @@ All errors are reported through both visual and audio feedback.
 ## Acknowledgments
 
 - FFmpeg for media conversion capabilities
-- Python tkinter for the GUI framework
+- wxPython for the accessible GUI framework
