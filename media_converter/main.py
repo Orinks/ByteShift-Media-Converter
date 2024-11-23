@@ -1,8 +1,8 @@
-from gui import MediaConverterGUI
+from gui import MediaConverterApp
 
 def main():
-    app = MediaConverterGUI()
-    app.root.mainloop()
+    app = MediaConverterApp()
+    app.MainLoop()
 
 if __name__ == "__main__":
     main()
