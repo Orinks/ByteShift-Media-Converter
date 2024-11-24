@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -23,32 +22,47 @@ wheels/
 
 # Virtual Environment
 venv/
+env/
 ENV/
+.env
+.venv
 
-# IDE specific files
+# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
 .project
 .pydevproject
+.settings/
 
-# OS specific files
-.DS_Store
+# Distribution
+*.spec
+installer/
+*.zip
+media_converter/dist/
+media_converter/build/
+media_converter/__pycache__/
+
+# Windows
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Application specific
-*.mp3
+# Media files (test files)
 *.mp4
 *.avi
 *.mkv
 *.mov
 *.wmv
+*.mp3
 *.wav
 *.aac
 *.ogg
 *.flac
 
-# Aider specific
-.aider*
-.env
+# Logs and databases
+*.log
+*.sqlite
+*.db
