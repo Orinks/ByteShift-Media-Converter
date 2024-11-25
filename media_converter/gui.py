@@ -149,8 +149,8 @@ class MediaConverterFrame(wx.Frame):
         help_dialog.Destroy()
 
     def on_browse(self, event):
-        extensions = [ext for _, _, ext in (self.converter.SUPPORTED_VIDEO_FORMATS + self.converter.SUPPORTED_AUDIO_FORMATS)]
-        wildcard = "Media Files|*" + ";*".join(extensions) + "|All files (*.*)|*.*"
+        extensions = [ext[1:] for _, ext, _ in (self.converter.SUPPORTED_VIDEO_FORMATS + self.converter.SUPPORTED_AUDIO_FORMATS)]
+        wildcard = "Media Files|*." + ";*.".join(extensions) + "|All files (*.*)|*.*"
         with wx.FileDialog(self, "Choose a file", wildcard=wildcard,
                          style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
             
@@ -199,7 +199,7 @@ class MediaConverterFrame(wx.Frame):
             return
             
         with wx.FileDialog(self, "Save converted file", 
-                          wildcard=f"{display_format} files|*{output_format}",
+                          wildcard=f"{display_format}|*{output_format}|All files (*.*)|*.*",
                           style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT) as fileDialog:
             
             if fileDialog.ShowModal() == wx.ID_CANCEL:
@@ -237,8 +237,9 @@ class MediaConverterFrame(wx.Frame):
     
     def validate_conversion(self, input_path, display_format):
         input_ext = os.path.splitext(input_path)[1].lower()
-        if (input_ext not in self.converter.SUPPORTED_VIDEO_FORMATS and 
-            input_ext not in self.converter.SUPPORTED_AUDIO_FORMATS):
+        supported_extensions = [ext for _, ext, _ in (self.converter.SUPPORTED_VIDEO_FORMATS + 
+                                                    self.converter.SUPPORTED_AUDIO_FORMATS)]
+        if input_ext not in supported_extensions:
             wx.MessageBox(f"Input format {input_ext} is not supported", "Error",
                          wx.OK | wx.ICON_ERROR)
             return False
