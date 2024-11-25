@@ -29,11 +29,36 @@ class MediaConverterFrame(wx.Frame):
         
         # Output format selection
         format_box = wx.StaticBox(panel, label="Step 2: Select Output Format")
-        format_sizer = wx.StaticBoxSizer(format_box, wx.HORIZONTAL)
+        format_sizer = wx.StaticBoxSizer(format_box, wx.VERTICAL)
         
-        self.format_choice = wx.Choice(panel, choices=self.get_supported_formats())
+        format_panel = wx.Panel(panel)
+        format_panel_sizer = wx.BoxSizer(wx.VERTICAL)
+        
+        format_label = wx.StaticText(format_panel, label="Output Format:")
+        format_panel_sizer.Add(format_label, 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        
+        self.format_choice = wx.Choice(format_panel, choices=self.get_supported_formats())
         self.format_choice.SetToolTip("Select the output format")
-        format_sizer.Add(self.format_choice, 1, wx.EXPAND | wx.ALL, 5)
+        self.format_choice.SetSelection(0)  # Select first format by default
+        self.format_choice.Bind(wx.EVT_SET_FOCUS, self.on_format_focus)
+        format_panel_sizer.Add(self.format_choice, 0, wx.EXPAND | wx.ALL, 5)
+        
+        # Format description
+        description_label = wx.StaticText(format_panel, label="Format Description:")
+        format_panel_sizer.Add(description_label, 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        
+        # Description text control using the same style as help dialog
+        self.description_text = wx.TextCtrl(
+            format_panel,
+            value="Select a format to see its description",
+            style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.BORDER_NONE,
+            size=(-1, 60)
+        )
+        self.description_text.SetBackgroundColour(format_panel.GetBackgroundColour())
+        format_panel_sizer.Add(self.description_text, 0, wx.EXPAND | wx.ALL, 5)
+        
+        format_panel.SetSizer(format_panel_sizer)
+        format_sizer.Add(format_panel, 1, wx.EXPAND)
         
         main_sizer.Add(format_sizer, 0, wx.EXPAND | wx.ALL, 5)
         
@@ -50,6 +75,9 @@ class MediaConverterFrame(wx.Frame):
         # Status bar
         self.status_bar = self.CreateStatusBar()
         self.status_bar.SetStatusText("Ready - Press F1 for help")
+        
+        # Make status bar accessible
+        self.status_bar.SetName("Status Bar")  # Name for screen readers
         
         # Set sizer and layout
         panel.SetSizer(main_sizer)
@@ -76,8 +104,8 @@ class MediaConverterFrame(wx.Frame):
     
     def get_supported_formats(self):
         formats = []
-        formats.extend(self.converter.SUPPORTED_VIDEO_FORMATS)
-        formats.extend(self.converter.SUPPORTED_AUDIO_FORMATS)
+        formats.extend([name for name, _, _ in self.converter.SUPPORTED_VIDEO_FORMATS])
+        formats.extend([name for name, _, _ in self.converter.SUPPORTED_AUDIO_FORMATS])
         return sorted(formats)
     
     def on_help(self, event):
@@ -121,7 +149,8 @@ class MediaConverterFrame(wx.Frame):
         help_dialog.Destroy()
 
     def on_browse(self, event):
-        wildcard = "Media Files|*.mp4;*.avi;*.mkv;*.mov;*.wmv;*.mp3;*.wav;*.aac;*.ogg;*.flac|All files (*.*)|*.*"
+        extensions = [ext for _, _, ext in (self.converter.SUPPORTED_VIDEO_FORMATS + self.converter.SUPPORTED_AUDIO_FORMATS)]
+        wildcard = "Media Files|*" + ";*".join(extensions) + "|All files (*.*)|*.*"
         with wx.FileDialog(self, "Choose a file", wildcard=wildcard,
                          style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
             
@@ -130,14 +159,23 @@ class MediaConverterFrame(wx.Frame):
             
             pathname = fileDialog.GetPath()
             self.file_text.SetValue(pathname)
-            self.status_bar.SetStatusText(f"Selected file: {os.path.basename(pathname)}")
+            self.set_status_text(f"Selected file: {os.path.basename(pathname)}")
             wx.Bell()  # Audible feedback
             self.format_choice.SetFocus()
     
     def on_format_change(self, event):
         selected = self.format_choice.GetString(self.format_choice.GetSelection())
-        self.status_bar.SetStatusText(f"Selected format: {selected}")
+        description = self.converter.get_format_description(selected)
+        self.description_text.SetValue(description)
+        # Don't steal focus when changing format
         wx.Bell()  # Audible feedback
+    
+    def on_format_focus(self, event):
+        # Ensure a format is selected when the choice gets focus
+        if self.format_choice.GetSelection() == wx.NOT_FOUND:
+            self.format_choice.SetSelection(0)
+            self.on_format_change(None)  # Update description for the selected format
+        event.Skip()  # Continue with normal focus handling
     
     def on_convert(self, event):
         input_path = self.file_text.GetValue()
@@ -153,14 +191,15 @@ class MediaConverterFrame(wx.Frame):
             self.format_choice.SetFocus()
             return
         
-        output_format = self.format_choice.GetString(self.format_choice.GetSelection())
+        display_format = self.format_choice.GetString(self.format_choice.GetSelection())
+        output_format = self.converter.get_extension_from_display_name(display_format)
         
-        if not self.validate_conversion(input_path, output_format):
+        if not self.validate_conversion(input_path, display_format):
             self.format_choice.SetFocus()
             return
             
         with wx.FileDialog(self, "Save converted file", 
-                          wildcard=f"{output_format} files|*{output_format}",
+                          wildcard=f"{display_format} files|*{output_format}",
                           style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT) as fileDialog:
             
             if fileDialog.ShowModal() == wx.ID_CANCEL:
@@ -196,7 +235,7 @@ class MediaConverterFrame(wx.Frame):
                 progress_dialog.Destroy()
                 self.convert_btn.Enable(True)
     
-    def validate_conversion(self, input_path, output_format):
+    def validate_conversion(self, input_path, display_format):
         input_ext = os.path.splitext(input_path)[1].lower()
         if (input_ext not in self.converter.SUPPORTED_VIDEO_FORMATS and 
             input_ext not in self.converter.SUPPORTED_AUDIO_FORMATS):
@@ -205,6 +244,13 @@ class MediaConverterFrame(wx.Frame):
             return False
         return True
 
+    def set_status_text(self, text: str):
+        """Set status bar text and ensure it's screen reader friendly"""
+        self.status_bar.SetStatusText(text)
+        # Force a focus change to trigger screen reader
+        self.status_bar.SetFocus()
+        self.format_choice.SetFocus()
+        
 class MediaConverterApp(wx.App):
     def OnInit(self):
         frame = MediaConverterFrame()
