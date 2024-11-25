@@ -28,9 +28,8 @@ class MediaConverter:
         ('M4A (.m4a)', '.m4a', 'AAC audio in MP4 container, commonly used for music and podcasts'),
         ('MP2 (.mp2)', '.mp2', 'Older audio format, still used in some broadcasting applications'),
         ('MP3 (.mp3)', '.mp3', 'Most popular compressed audio format, widely supported across all devices'),
-        ('OGA (.oga)', '.oga', 'Ogg audio container format, free and open standard'),
-        ('OGG (.ogg)', '.ogg', 'Free and open audio format, popular in gaming and open-source software'),
-        ('OPUS (.opus)', '.opus', 'Modern audio format, excellent quality for voice and music streaming'),
+        ('OGG (.ogg)', '.ogg', 'Free and open-source audio format, popular in gaming and online streaming'),
+        ('OPUS (.opus)', '.opus', 'Modern audio format optimized for both speech and music streaming'),
         ('WAV (.wav)', '.wav', 'Standard uncompressed audio format, high quality for professional use'),
         ('WMA (.wma)', '.wma', 'Windows Media Audio, good compatibility with Windows systems')
     ]
