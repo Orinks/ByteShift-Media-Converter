@@ -1,13 +1,14 @@
-# Media Converter
+# ByteShift Media Converter
 
 A screen reader-friendly desktop application for converting audio and video files between different formats. Built with Python and wxPython, using FFmpeg for media conversion.
 
 ## Features
 
-- Convert between popular video and audio formats
+- Convert between a wide range of video and audio formats
 - Native Windows controls for optimal accessibility
-- Full screen reader support with NVDA and JAWS
+- Full screen reader support with NVDA and Windows Narrator
 - Keyboard shortcuts for all major functions
+- Detailed format descriptions and guidance
 - Progress tracking during conversion
 - Error handling with accessible notifications
 - Help system with keyboard navigation guide
@@ -15,21 +16,42 @@ A screen reader-friendly desktop application for converting audio and video file
 ## Supported Formats
 
 ### Video Formats
-- MP4 (.mp4)
-- AVI (.avi)
-- MKV (.mkv)
-- MOV (.mov)
-- WMV (.wmv)
+- 3GP (.3gp) - Mobile device video format
+- AVI (.avi) - Microsoft's Audio Video Interleave format
+- FLV (.flv) - Flash Video format
+- M4V (.m4v) - Apple's video format
+- MKV (.mkv) - Matroska Video format
+- MOV (.mov) - Apple QuickTime movie format
+- MP4 (.mp4) - Most widely used video format
+- MPEG/MPG (.mpeg/.mpg) - Standard video format
+- TS (.ts) - Transport Stream format
+- VOB (.vob) - DVD Video Object format
+- WEBM (.webm) - Open web video format
+- WMV (.wmv) - Windows Media Video format
 
 ### Audio Formats
-- MP3 (.mp3)
-- WAV (.wav)
-- AAC (.aac)
-- OGG (.ogg)
-- FLAC (.flac)
+- AAC (.aac) - Advanced Audio Coding format
+- AC3 (.ac3) - Dolby Digital audio format
+- AIFF (.aiff) - Apple's uncompressed audio format
+- AMR (.amr) - Adaptive Multi-Rate audio
+- FLAC (.flac) - Free Lossless Audio Codec
+- M4A (.m4a) - AAC audio in MP4 container
+- MP2 (.mp2) - Broadcasting audio format
+- MP3 (.mp3) - Most popular compressed audio format
+- OGG (.ogg) - Free and open-source audio format
+- OPUS (.opus) - Modern audio format for streaming
+- WAV (.wav) - Standard uncompressed audio format
+- WMA (.wma) - Windows Media Audio format
 
 ## Installation
 
+### Option 1: Download Pre-built Binaries (Recommended)
+1. Go to the [Releases](https://github.com/Orinks/Media-Converter/releases) page
+2. Download either:
+   - `ByteShiftMediaConverter-v1.1-setup.exe` for a full installation
+   - `ByteShiftMediaConverter-v1.1-portable.zip` for portable use
+
+### Option 2: Build from Source
 1. Clone the repository:
 ```bash
 git clone https://github.com/Orinks/Media-Converter.git
@@ -54,16 +76,13 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Run the application:
-```bash
-python media_converter/main.py
-```
-
+1. Launch ByteShift Media Converter
 2. Select an input file using the "Browse" button or press Ctrl+O
 3. Choose the desired output format from the dropdown menu
-4. Click "Convert" or press Ctrl+C to start the conversion
-5. Select the output location when prompted
-6. Wait for the conversion to complete
+4. Review the format description for compatibility information
+5. Click "Convert" or press Ctrl+C to start the conversion
+6. Select the output location when prompted
+7. Wait for the conversion to complete
 
 ### Keyboard Shortcuts
 
@@ -79,17 +98,15 @@ python media_converter/main.py
 - Native Windows controls for optimal screen reader compatibility
 - Full keyboard navigation support
 - Clear focus indicators
-- Descriptive labels and announcements
+- Descriptive format information
+- Detailed status announcements
 - Help system with navigation guide
 - Standard Windows keyboard behavior
 
 ## Requirements
 
-- Python 3.6 or higher
-- FFmpeg
-- Required Python packages (see requirements.txt):
-  - wxPython
-  - ffmpeg-python
+- Windows 10 or later
+- No additional software required - all codecs included!
 
 ## Project Structure
 
