@@ -4,7 +4,7 @@ from converter import MediaConverter
 
 class MediaConverterFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='Media Converter')
+        super().__init__(parent=None, title='ByteShift Media Converter')
         self.converter = MediaConverter()
         
         # Set up the main panel

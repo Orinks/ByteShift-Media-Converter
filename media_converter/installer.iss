@@ -1,8 +1,8 @@
-#define MyAppName "Media Converter"
-#define MyAppVersion "1.0"
+#define MyAppName "ByteShift Media Converter"
+#define MyAppVersion "1.1"
 #define MyAppPublisher "Orinks"
 #define MyAppURL "https://github.com/Orinks/Media-Converter"
-#define MyAppExeName "MediaConverter.exe"
+#define MyAppExeName "ByteShiftMediaConverter.exe"
 
 [Setup]
 AppId={{8F4E37D1-C56D-4E7C-B6F4-C8F4E37D1C56D}
