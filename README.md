@@ -46,16 +46,16 @@ A screen reader-friendly desktop application for converting audio and video file
 ## Installation
 
 ### Option 1: Download Pre-built Binaries (Recommended)
-1. Go to the [Releases](https://github.com/Orinks/Media-Converter/releases) page
-2. Download either:
-   - `ByteShiftMediaConverter-v1.1-setup.exe` for a full installation
-   - `ByteShiftMediaConverter-v1.1-portable.zip` for portable use
+1. Go to the [Releases](https://github.com/Orinks/ByteShift-Media-Converter/releases) page
+2. Download the latest release:
+   - `ByteShiftMediaConverter-setup.exe` for a full installation
+   - `ByteShiftMediaConverter-portable.zip` for portable use
 
 ### Option 2: Build from Source
 1. Clone the repository:
 ```bash
-git clone https://github.com/Orinks/Media-Converter.git
-cd Media-Converter
+git clone https://github.com/Orinks/ByteShift-Media-Converter.git
+cd ByteShift-Media-Converter
 ```
 
 2. Create a virtual environment (optional but recommended):
