@@ -6,7 +6,7 @@ A screen reader-friendly desktop application for converting audio and video file
 
 - Convert between a wide range of video and audio formats
 - Native Windows controls for optimal accessibility
-- Full screen reader support with NVDA and Windows Narrator
+- Universal screen reader support
 - Keyboard shortcuts for all major functions
 - Detailed format descriptions and guidance
 - Progress tracking during conversion
