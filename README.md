@@ -1,16 +1,16 @@
 # ByteShift Media Converter
 
-A screen reader-friendly desktop application for converting audio and video files between different formats. Built with Python and wxPython, using FFmpeg for media conversion.
+A desktop application that converts audio and video files between formats. Built with Python and wxPython, using FFmpeg for media conversion.
 
 ## Features
 
 - Convert between a wide range of video and audio formats
-- Native Windows controls for optimal accessibility
+- Native Windows controls
 - Universal screen reader support
 - Keyboard shortcuts for all major functions
 - Detailed format descriptions and guidance
 - Progress tracking during conversion
-- Error handling with accessible notifications
+- Error handling with notifications
 - Help system with keyboard navigation guide
 
 ## Supported Formats
@@ -95,7 +95,7 @@ pip install -r requirements.txt
 
 ## Accessibility Features
 
-- Native Windows controls for optimal screen reader compatibility
+- Native Windows controls for screen reader compatibility
 - Full keyboard navigation support
 - Clear focus indicators
 - Descriptive format information
@@ -126,7 +126,7 @@ The application includes comprehensive error handling for:
 - Failed conversions
 - FFmpeg errors
 
-All errors are reported through native Windows dialogs for optimal accessibility.
+All errors are reported through native Windows dialogs.
 
 ## License
 
@@ -149,4 +149,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. Make sure 
 ## Acknowledgments
 
 - FFmpeg for media conversion capabilities
-- wxPython for the accessible GUI framework
+- wxPython for the GUI framework
